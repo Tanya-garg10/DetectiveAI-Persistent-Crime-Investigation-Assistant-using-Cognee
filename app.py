@@ -59,6 +59,12 @@ def cognee_remember(text, dataset="default_dataset"):
     asyncio.run(_store())
 
 
+# ─── SESSION STATE (initialize FIRST) ────────────────────
+if "active_case" not in st.session_state:
+    st.session_state.active_case = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 # ─── SIDEBAR ──────────────────────────────────────────────
 with st.sidebar:
     st.image("https://avatars.githubusercontent.com/u/126177848?s=200&v=4", width=80)
@@ -76,15 +82,9 @@ with st.sidebar:
     ])
 
     st.divider()
-    st.caption(f"🟢 Connected to Cognee Cloud")
-    st.caption(f"📂 Active Case: {st.session_state.get('active_case', {}).get('name', 'None')}")
-
-
-# ─── SESSION STATE ────────────────────────────────────────
-if "active_case" not in st.session_state:
-    st.session_state.active_case = None
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+    st.caption("🟢 Connected to Cognee Cloud")
+    active_name = st.session_state.active_case["name"] if st.session_state.active_case else "None"
+    st.caption(f"📂 Active Case: {active_name}")
 
 
 # ══════════════════════════════════════════════════════════
